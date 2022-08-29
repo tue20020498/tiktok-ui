@@ -8,6 +8,8 @@
     background-color: var(--white);
     border: 1px solid transparent;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 
     + .wrapper {
         margin-left: 8px;
@@ -52,6 +54,8 @@
     background-color: var(--primary-color);
     color: var(--white);
     border-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
 
     &:hover {
         border-color: var(--primary-color);

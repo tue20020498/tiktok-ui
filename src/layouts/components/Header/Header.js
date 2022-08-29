@@ -1,41 +1,40 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets/images';
-import HeadlessTippy from '@tippyjs/react/headless';
+
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import {
-    faCircleXmark,
-    faSpinner,
-    faMagnifyingGlass,
-    faPlus,
-    faEllipsisVertical,
-    faEarthAsia,
-    faCircleQuestion,
-    faKeyboard,
-    faCloudUpload,
-    faGear,
-    faCoins,
-    faSignOut,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Wrapper as PopperWrapper } from '~/components/Popper';
-import AccountItem from '~/components/AccountItem';
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
-import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { MessageIcon, InboxIcon } from '~/components/Icons';
+import Search from '../Search';
+import config from '~/config';
+
+import {
+    MessageIcon,
+    InboxIcon,
+    UserIcon,
+    CoinIcon,
+    SettingIcon,
+    LanguageIcon,
+    HelpIcon,
+    KeyboarbIcon,
+    LogoutIcon,
+} from '~/components/Icons';
 import Image from '~/components/Image';
+// import { config } from '@fortawesome/fontawesome-svg-core';
 
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
     {
-        icon: <FontAwesomeIcon icon={faEarthAsia} />,
+        icon: <LanguageIcon />,
         title: 'English',
         chirldren: {
-            title: 'Languege',
+            title: 'Language',
             data: [
                 {
                     type: 'language',
@@ -47,27 +46,28 @@ const MENU_ITEMS = [
                     code: 'vi',
                     title: 'Tiếng Việt',
                 },
+                
             ],
         },
     },
     {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+        icon: <HelpIcon />,
         title: 'Feedback and help',
         to: '/feedback',
     },
     {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
+        icon: <KeyboarbIcon />,
         title: 'Keyboarb shortcuts',
     },
 ];
 
 function Header() {
-    const [searchResult, setSearchResult] = useState([]);
     const currentUser = true;
+    const [searchResult, setSearchResult] = useState([]);
 
     useEffect(() => {
         setTimeout(() => {
-            setSearchResult([]);
+            setSearchResult([1]);
         }, 0);
     }, []);
 
@@ -81,23 +81,23 @@ function Header() {
 
     const userMenu = [
         {
-            icon: <FontAwesomeIcon icon={faUser} />,
+            icon: <UserIcon />,
             title: 'View profile',
             to: '@hoas',
         },
         {
-            icon: <FontAwesomeIcon icon={faCoins} />,
+            icon: <CoinIcon />,
             title: 'Get coins',
             to: '/coin',
         },
         {
-            icon: <FontAwesomeIcon icon={faGear} />,
+            icon: <SettingIcon />,
             title: 'Settings',
             to: '/settings',
         },
         ...MENU_ITEMS,
         {
-            icon: <FontAwesomeIcon icon={faSignOut} />,
+            icon: <LogoutIcon />,
             title: 'Signout',
             to: '/logout',
             separate: true,
@@ -106,40 +106,14 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <div className={cx('logo')}>
+                <Link to={config.routes.home} className={cx('logo')}>
                     <img src={images.logo} alt="" />
-                </div>
-                <HeadlessTippy
-                    interactive={true}
-                    visible={searchResult.length > 0}
-                    render={(attrs) => (
-                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                            <PopperWrapper>
-                                <h4 className={cx('search-title')}>Account</h4>
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                                <AccountItem />
-                            </PopperWrapper>
-                        </div>
-                    )}
-                >
-                    <div className={cx('search')}>
-                        <input placeholder="Search account and videos" spellCheck={false} />
-                        <button className={cx('clear')}>
-                            <FontAwesomeIcon icon={faCircleXmark} />
-                        </button>
-                        <FontAwesomeIcon icon={faSpinner} className={cx('loading')} />
-                        <span className={cx('separate')}></span>
-                        <button className={cx('search-btn')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        </button>
-                    </div>
-                </HeadlessTippy>
+                </Link>
+                {<Search />}
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />} to="/upload">
                                 Up load
                             </Button>
                             <Tippy delay={[0, 50]} content="Message">
@@ -156,10 +130,10 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />}>
+                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />} to="/upload">
                                 Up load
                             </Button>
-                            <Button primary>Log in</Button>
+                            <Button primary >Log in</Button>
                         </>
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>

@@ -4,7 +4,7 @@
     --default-layout-header-height: 60px;
     --default-layout-width: 1150px;
     --default-layout-horizontol-spacer: 24px;
-
+    --font-family: 'ProximaNova', sans-serif;
     --balck: #000;
     --blue: #4addf0;
     --white: #fff;
@@ -15,7 +15,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    // font-family: 'ProximaNova', sans-serif;
 }
 
 html {
@@ -23,7 +22,7 @@ html {
 }
 
 body {
-    font-family: 'ProximaNova', sans-serif;
+    font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.5;
 }
@@ -64,6 +63,7 @@ a[href] {
 }
 
 body {
+    overflow-y: overlay;
     .tippy-box {
         border-radius: 8px;
         font-weight: 600;
@@ -80,4 +80,21 @@ body {
     .tippy-content {
         padding: 8px 9px;
     }
+}
+
+// Scollbar css
+
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
