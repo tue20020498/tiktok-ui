@@ -8,7 +8,7 @@
     --balck: #000;
     --blue: #4addf0;
     --white: #fff;
-    --text-color: #161823;
+    --text-color: #161823bf;
 }
 
 * {
@@ -60,6 +60,7 @@ input,
 
 a[href] {
     text-decoration: none;
+    color: #161823;
 }
 
 body {

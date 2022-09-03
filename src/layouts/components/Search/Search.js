@@ -1,5 +1,4 @@
-import { faCircleXmark, faSpinner, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as searchServices from '~/sevices/searchService';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';

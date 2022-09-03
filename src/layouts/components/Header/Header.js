@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Header.module.scss';
-import classNames from 'classnames/bind';
-import images from '~/assets/images';
+import { useEffect, useState, useContext } from 'react';
+import Modal from '~/components/Modal';
 
+import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { faPlus, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames/bind';
+
+import styles from './Header.module.scss';
+import images from '~/assets/images';
+
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import Search from '../Search';
 import config from '~/config';
+import { StoreContext } from '~/store';
+import { OPEN_MODAL } from '~/store/reducer';
 
 import {
     MessageIcon,
@@ -25,14 +30,13 @@ import {
     LogoutIcon,
 } from '~/components/Icons';
 import Image from '~/components/Image';
-// import { config } from '@fortawesome/fontawesome-svg-core';
 
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
     {
         icon: <LanguageIcon />,
-        title: 'English',
+        title: 'Language    ',
         chirldren: {
             title: 'Language',
             data: [
@@ -46,7 +50,7 @@ const MENU_ITEMS = [
                     code: 'vi',
                     title: 'Tiếng Việt',
                 },
-                
+
             ],
         },
     },
@@ -62,8 +66,10 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-    const currentUser = true;
     const [searchResult, setSearchResult] = useState([]);
+
+    const [state, dispatch] = useContext(StoreContext)
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -111,7 +117,7 @@ function Header() {
                 </Link>
                 {<Search />}
                 <div className={cx('actions')}>
-                    {currentUser ? (
+                    {state.currentUser ? (
                         <>
                             <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />} to="/upload">
                                 Up load
@@ -130,14 +136,14 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />} to="/upload">
+                            <Button text leftIcon={<FontAwesomeIcon icon={faPlus} />} onClick={() => dispatch(OPEN_MODAL)}>
                                 Up load
                             </Button>
-                            <Button primary >Log in</Button>
+                            <Button primary onClick={() => dispatch(OPEN_MODAL)}>Log in</Button>
                         </>
                     )}
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                        {currentUser ? (
+                    <Menu items={state.currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                        {state.currentUser ? (
                             <Image
                                 className={cx('user-avatar')}
                                 src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-aiso/65d3c6b1d1e205c75536ccf1f26d552d~c5_100x100.jpeg?x-expires=1661673600&x-signature=547NUM4qiPRwhfR%2FqxACxQJNBjw%3D"
@@ -151,6 +157,9 @@ function Header() {
                         )}
                     </Menu>
                 </div>
+
+                <Modal isOpen={state.isOpenModal}/>
+
             </div>
         </header>
     );
